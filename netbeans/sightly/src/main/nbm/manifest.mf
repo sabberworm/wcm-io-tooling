@@ -4,3 +4,4 @@ OpenIDE-Module-Short-Description: This is a Netbeans Extension to support sightl
 OpenIDE-Module-Long-Description: Module for Netbeans to support sightly autocompletion
 OpenIDE-Module-Name: SightlyExtension
 OpenIDE-Module-Display-Category: Sightly
+OpenIDE-Module-Layer: io/wcm/tooling/netbeans/sightly/layer.xml
