@@ -56,7 +56,7 @@ public enum DataSlyCommands {
   /**
    * Test
    */
-  DATA_SLY_TEST("data-sly-test", "dataSlyTest_documentation"),
+  DATA_SLY_TEST("data-sly-test", "dataSlyTest_documentation", true),
   /**
    * Text
    */
