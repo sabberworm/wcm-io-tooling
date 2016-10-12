@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2016 wcm.io.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<!DOCTYPE codetemplates PUBLIC  "-//NetBeans//DTD Editor Code Templates settings 1.0//EN"
+                                "http://www.netbeans.org/dtds/EditorCodeTemplates-1_0.dtd">
+
+<codetemplates>
+
+  <codetemplate abbreviation="sly-use">
+    <code>
+      <description>data-sly-use</description>
+          <![CDATA[<sly data-sly-use.${variableName}="${className}" />]]>
+    </code>
+  </codetemplate>
+
+  <codetemplate abbreviation="sly-text">
+    <description>data-sly-text</description>
+    <code>
+    <![CDATA[data-sly-text="${${value} @ context=${context}}"]]>
+    </code>
+  </codetemplate>
+  <codetemplate abbreviation="sly-test">
+    <description>data-sly-test</description>
+    <code>
+    <![CDATA[data-sly-test="${${expression}}"]]>
+    </code>
+  </codetemplate>
+  <codetemplate abbreviation="sly-template">
+    <description>data-sly-template</description>
+    <code>
+    <![CDATA[<template data-sly-template.${variable}="${ @ ${value}}">
+    $END$
+  </template>]]>
+    </code>
+  </codetemplate>
+  <codetemplate abbreviation="sly-resource">
+    <description>data-sly-resource</description>
+    <code>
+    <![CDATA[data-sly-resource="${'${pathToResource}' @ resourceType='${resourceType}'}"]]>
+    </code>
+  </codetemplate>
+  <codetemplate abbreviation="sly-repeat">
+    <description>data-sly-repeat</description>
+    <code>
+    <![CDATA[data-sly-repeat="${${iterable}}"]]>
+    </code>
+  </codetemplate>
+  <codetemplate abbreviation="sly-list">
+    <description>data-sly-list</description>
+    <code>
+    <![CDATA[<sly data-sly-list.${variable}="${${iterable}}">
+    $END$
+  </sly>]]>
+    </code>
+  </codetemplate>
+  <codetemplate abbreviation="sly-include">
+    <description>data-sly-include</description>
+    <code>
+    <![CDATA[data-sly-include="${pathToFile}"]]>
+    </code>
+  </codetemplate>
+  <codetemplate abbreviation="sly-call">
+    <description>data-sly-call</description>
+    <code>
+    <![CDATA[data-sly-call="${${template} @ ${variables}}"]]>
+    </code>
+  </codetemplate>
+  <codetemplate abbreviation="sly-attribute">
+    <description>data-sly-attribute</description>
+    <code>
+    <![CDATA[data-sly-attribute="${${value}}"]]>
+    </code>
+  </codetemplate>
+
+</codetemplates>
