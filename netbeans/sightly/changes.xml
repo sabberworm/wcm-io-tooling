@@ -27,6 +27,9 @@
       <action type="add" dev="amuthmann" issue="WTOOL-25">
         Support for Documentation of data-sly-*, member-lookup and class-lookup autocompletion.
       </action>
+      <action type="add" dev="amuthmann" issue="WTOOL-26">
+        Support for Code-Templating.
+      </action>
     </release>
 
     <release version="1.1.0" date="2014-12-19">
