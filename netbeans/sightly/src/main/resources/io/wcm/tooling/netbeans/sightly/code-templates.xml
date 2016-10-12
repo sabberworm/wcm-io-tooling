@@ -19,6 +19,13 @@ limitations under the License.
 
 <codetemplates>
 
+  <codetemplate abbreviation="sly">
+    <code>
+      <description>sly</description>
+          <![CDATA[<sly ${parameters}>${content}</sly>]]>
+    </code>
+  </codetemplate>
+
   <codetemplate abbreviation="sly-use">
     <code>
       <description>data-sly-use</description>
