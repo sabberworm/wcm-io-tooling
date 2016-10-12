@@ -22,73 +22,75 @@ limitations under the License.
   <codetemplate abbreviation="sly">
     <code>
       <description>sly</description>
-          <![CDATA[<sly ${parameters}>${content}</sly>]]>
+          <![CDATA[<sly>${cursor}</sly>]]>
     </code>
   </codetemplate>
 
   <codetemplate abbreviation="sly-use">
     <code>
       <description>data-sly-use</description>
-          <![CDATA[<sly data-sly-use.${variableName}="${className}" />]]>
+          <![CDATA[data-sly-use.${variableName}="$${'${className}'}"${cursor}]]>
     </code>
   </codetemplate>
 
   <codetemplate abbreviation="sly-text">
     <description>data-sly-text</description>
     <code>
-    <![CDATA[data-sly-text="${${value} @ context=${context}}"]]>
+    <![CDATA[data-sly-text="$${${value}}"${cursor}]]>
     </code>
   </codetemplate>
   <codetemplate abbreviation="sly-test">
     <description>data-sly-test</description>
     <code>
-    <![CDATA[data-sly-test="${${expression}}"]]>
+    <![CDATA[data-sly-test="$${${expression}}"${cursor}]]>
     </code>
   </codetemplate>
   <codetemplate abbreviation="sly-template">
     <description>data-sly-template</description>
     <code>
-    <![CDATA[<template data-sly-template.${variable}="${ @ ${value}}">
-    $END$
+    <![CDATA[<template data-sly-template.${variable}="$${ @ ${params}}">
+    ${cursor}
   </template>]]>
     </code>
   </codetemplate>
   <codetemplate abbreviation="sly-resource">
     <description>data-sly-resource</description>
     <code>
-    <![CDATA[data-sly-resource="${'${pathToResource}' @ resourceType='${resourceType}'}"]]>
+    <![CDATA[data-sly-resource="$${'${pathToResource}' @ resourceType='${resourceType}'}"${cursor}]]>
     </code>
   </codetemplate>
   <codetemplate abbreviation="sly-repeat">
     <description>data-sly-repeat</description>
     <code>
-    <![CDATA[data-sly-repeat="${${iterable}}"]]>
+    <![CDATA[<sly data-sly-repeat.${variable}="$${${iterable}}">
+      ${cursor}
+  </sly>]]>
     </code>
   </codetemplate>
   <codetemplate abbreviation="sly-list">
     <description>data-sly-list</description>
     <code>
-    <![CDATA[<sly data-sly-list.${variable}="${${iterable}}">
-    $END$
+    <![CDATA[<sly data-sly-list.${variable}="$${${iterable}}">
+    ${cursor}
   </sly>]]>
     </code>
   </codetemplate>
   <codetemplate abbreviation="sly-include">
     <description>data-sly-include</description>
     <code>
-    <![CDATA[data-sly-include="${pathToFile}"]]>
+    <![CDATA[<sly data-sly-include="${pathToFile}"/>${cursor}]]>
     </code>
   </codetemplate>
   <codetemplate abbreviation="sly-call">
     <description>data-sly-call</description>
     <code>
-    <![CDATA[data-sly-call="${${template} @ ${variables}}"]]>
+    <![CDATA[<sly data-sly-call="$${${template} @ ${variables}}"/>${cursor}]]>
     </code>
   </codetemplate>
   <codetemplate abbreviation="sly-attribute">
     <description>data-sly-attribute</description>
     <code>
-    <![CDATA[data-sly-attribute="${${value}}"]]>
+    <![CDATA[data-sly-attribute="$${${value}}"]]>
     </code>
   </codetemplate>
 
