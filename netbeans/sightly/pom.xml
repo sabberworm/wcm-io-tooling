@@ -45,7 +45,7 @@
 
   <properties>
     <site.url.module.prefix>tooling/netbeans/sightly</site.url.module.prefix>
-    <netbeans.version>RELEASE81</netbeans.version>
+    <netbeans.version>RELEASE82</netbeans.version>
   </properties>
 
   <build>
@@ -54,7 +54,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>nbm-maven-plugin</artifactId>
-        <version>3.14.1</version>
+        <version>4.1</version>
         <extensions>true</extensions>
         <configuration>
           <licenseName>Apache License, Version 2.0</licenseName>
