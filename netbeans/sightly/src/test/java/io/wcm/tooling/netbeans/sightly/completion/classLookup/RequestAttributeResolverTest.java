@@ -23,8 +23,9 @@ import io.wcm.tooling.netbeans.sightly.completion.BaseTest;
 import java.net.URL;
 import java.util.Set;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.netbeans.spi.java.classpath.support.ClassPathSupport;
+
+import static org.junit.Assert.*;
 
 /**
  *
@@ -35,20 +36,20 @@ public class RequestAttributeResolverTest extends BaseTest {
   public void testRequestAttributeLookup() {
     String text = "data-sly-use.foo=${'io.wcm.tooling.netbeans.sightly.TestClass' @ ";
     RequestAttributeResolver resolver = new RequestAttributeResolver(text, ClassPathSupport.createClassPath(new URL[0]));
-    Set<String> results = resolver.resolve("");
+    Set<RequestAttributeLookupResult> results = resolver.resolve("");
     assertEquals("io.wcm.tooling.netbeans.sightly.TestClass' @", 3, results.size());
-    assertEquals("requestAttribute1", results.iterator().next());
+    assertEquals("requestAttribute1", results.iterator().next().getRequestAttributeName());
     results = resolver.resolve("requestAttr");
     assertEquals("requestAttr ", 2, results.size());
-    assertEquals("requestAttribute1", results.iterator().next());
+    assertEquals("requestAttribute1", results.iterator().next().getRequestAttributeName());
     results = resolver.resolve("requestAttribute2");
     assertEquals("requestAttribute2 ", 1, results.size());
-    assertEquals("requestAttribute2", results.iterator().next());
+    assertEquals("requestAttribute2", results.iterator().next().getRequestAttributeName());
     text = "data-sly-use.foo=${'io.wcm.tooling.netbeans.sightly.TestClass' @ requestAttribute1 = foo, ";
     resolver = new RequestAttributeResolver(text, ClassPathSupport.createClassPath(new URL[0]));
     results = resolver.resolve("");
     assertEquals("io.wcm.tooling.netbeans.sightly.TestClass' @ requestAttribute1 = foo, ", 2, results.size());
-    assertEquals("requestAttribute2", results.iterator().next());
+    assertEquals("requestAttribute2", results.iterator().next().getRequestAttributeName());
   }
 
   public void testRequestAttributeLookupNoResults() {

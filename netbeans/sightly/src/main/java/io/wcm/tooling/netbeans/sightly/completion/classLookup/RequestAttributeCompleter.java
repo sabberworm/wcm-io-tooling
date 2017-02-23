@@ -38,6 +38,9 @@ import org.openide.util.Exceptions;
   @MimeRegistration(mimeType = "text/html", service = CompletionProvider.class),
   @MimeRegistration(mimeType = "text/x-jsp", service = CompletionProvider.class)
 })
+/**
+ * Autocompletion for Request Attributes (annotated by org.apache.sling.models.annotations.injectorspecific.RequestAttribute)
+ */
 public class RequestAttributeCompleter extends AbstractCompletionProvider {
 
   @Override
@@ -54,8 +57,13 @@ public class RequestAttributeCompleter extends AbstractCompletionProvider {
       }
       ClassPath cp = ClassPathSupport.createProxyClassPath(sourcePath, compilePath, bootPath);
       RequestAttributeResolver resolver = new RequestAttributeResolver(text, cp);
-      for (String result : resolver.resolve(filter)) {
-        ret.add(new BasicCompletionItem(result, false, startOffset, caretOffset));
+      for (RequestAttributeLookupResult result : resolver.resolve(filter)) {
+        if (result.getElement() != null) {
+          ret.add(new JavaElementCompletionItem(result.getElement(), result.getRequestAttributeName(), false, startOffset, caretOffset));
+        }
+        else {
+          ret.add(new BasicCompletionItem(result.getRequestAttributeName(), false, startOffset, caretOffset));
+        }
       }
     }
     catch (BadLocationException ex) {

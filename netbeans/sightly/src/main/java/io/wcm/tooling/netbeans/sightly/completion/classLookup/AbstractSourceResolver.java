@@ -24,6 +24,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
+import org.apache.commons.lang.StringUtils;
 import org.netbeans.api.java.classpath.ClassPath;
 import org.netbeans.api.java.source.ClasspathInfo;
 import org.netbeans.api.java.source.CompilationController;
@@ -55,6 +56,9 @@ public abstract class AbstractSourceResolver {
    * @return null or the fileobject
    */
   protected JavaSource getJavaSourceForClass(String clazzname) {
+    if (StringUtils.isEmpty(clazzname)) {
+      return null;
+    }
     String resource = clazzname.replaceAll("\\.", "/") + ".java";
     FileObject fileObject = classPath.findResource(resource);
     if (fileObject == null) {

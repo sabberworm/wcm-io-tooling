@@ -25,4 +25,14 @@ limitations under the License.
       </folder>
     </folder>
   </folder>
+  <!--
+  <folder name="csl-hints">
+    <folder name="text">
+      <folder name="html">
+        <folder name="hints">
+          <file name="io-wcm-tooling-netbeans-sightly-editor-hints-TestRule.instance" />
+        </folder>
+      </folder>
+    </folder>
+  </folder>-->
 </filesystem>

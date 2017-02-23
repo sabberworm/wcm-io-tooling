@@ -49,8 +49,8 @@ public class RequestAttributeResolver extends AbstractSourceResolver {
     this.text = text;
   }
 
-  public Set<String> resolve(String filter) {
-    Set<String> ret = new LinkedHashSet<>();
+  public Set<RequestAttributeLookupResult> resolve(String filter) {
+    Set<RequestAttributeLookupResult> ret = new LinkedHashSet<>();
     // only display results if filter contains @
     if (!StringUtils.contains(text, "@") || !StringUtils.contains(text, "data-sly-use")) {
       return ret;
@@ -69,13 +69,14 @@ public class RequestAttributeResolver extends AbstractSourceResolver {
       }
     };
     String clazz = StringUtils.substringBetween(text, "'");
+    String attributes = StringUtils.substringAfter(text, "@");
 
     Set<Element> elems = getMembersFromJavaSource(clazz, acceptor);
     for (Element elem : elems) {
       if (StringUtils.startsWithIgnoreCase(elem.getSimpleName().toString(), filter)
-              && !StringUtils.contains(text, elem.getSimpleName().toString() + " ")
-              && !StringUtils.contains(text, elem.getSimpleName().toString() + "=")) {
-        ret.add(elem.getSimpleName().toString());
+              && !StringUtils.contains(attributes, elem.getSimpleName().toString() + " ")
+              && !StringUtils.contains(attributes, elem.getSimpleName().toString() + "=")) {
+        ret.add(new RequestAttributeLookupResult(elem.getSimpleName().toString(), elem));
       }
     }
     if (ret.isEmpty()) {
@@ -83,7 +84,7 @@ public class RequestAttributeResolver extends AbstractSourceResolver {
         if (StringUtils.startsWithIgnoreCase(att, filter)
                 && !StringUtils.contains(text, att + " ")
                 && !StringUtils.contains(text, att + "=")) {
-          ret.add(att);
+          ret.add(new RequestAttributeLookupResult(att));
         }
       }
     }
