@@ -70,7 +70,9 @@ public class RequestAttributeResolver extends AbstractSourceResolver {
     };
     String clazz = StringUtils.substringBetween(text, "'");
     String attributes = StringUtils.substringAfter(text, "@");
-
+    if (StringUtils.isBlank(clazz)) {
+      return ret;
+    }
     Set<Element> elems = getMembersFromJavaSource(clazz, acceptor);
     for (Element elem : elems) {
       if (StringUtils.startsWithIgnoreCase(elem.getSimpleName().toString(), filter)
