@@ -19,107 +19,83 @@
  */
 package io.wcm.tooling.commons.fsresourceext.impl;
 
-import javax.jcr.observation.EventListener;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
-import org.osgi.service.component.annotations.Activate;
+import javax.jcr.Session;
+import javax.jcr.observation.EventIterator;
+import javax.jcr.observation.EventListener;
+import javax.jcr.observation.EventListenerIterator;
+import javax.jcr.observation.ObservationManager;
+
+import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.api.resource.ResourceResolverFactory;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.util.tracker.ServiceTracker;
-import org.osgi.util.tracker.ServiceTrackerCustomizer;
+import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 
 /**
  * Tracks selected set of JCR observation EventListeners from AEM implementation.
  */
 @Component(service = EventListenerTracker.class)
-public class EventListenerTracker implements ServiceTrackerCustomizer<EventListener, Object> {
+public class EventListenerTracker {
 
   static final String COMPONENT_CACHE_IMPL_CLASS = "com.day.cq.wcm.core.impl.components.ComponentCacheImpl";
   static final String HTML_LIBRARY_MANAGER_IMPL_CLASS = "com.adobe.granite.ui.clientlibs.impl.HtmlLibraryManagerImpl";
 
-  private BundleContext bundleContext;
-  private ServiceTracker serviceTracker;
-
-  private volatile EventListener componentCache;
-  private volatile EventListener htmlLibraryManager;
-
   private static final Logger log = LoggerFactory.getLogger(EventListenerTracker.class);
 
-  @Activate
-  private void activate(BundleContext context) {
-    this.bundleContext = context;
-    this.serviceTracker = new ServiceTracker<EventListener, Object>(context, EventListener.class, this);
-    this.serviceTracker.open();
-  }
+  @Reference
+  private ResourceResolverFactory resourceResolverFactory;
 
-  @Deactivate
-  private void deactivate() {
-    this.serviceTracker.close();
-  }
-
-  @Override
-  public Object addingService(ServiceReference<EventListener> reference) {
-    EventListener service = bundleContext.getService(reference);
-    String className = service.getClass().getName();
-
-    log.warn("Found EventListener: " + className);
-
-    if (isComponentCache(className)) {
-      componentCache = service;
+  private final static EventListener NOT_FOUND = new EventListener() {
+    @Override
+    public void onEvent(EventIterator events) {
+      // ignore
     }
-    else if (isHtmlLibraryManager(className)) {
-      htmlLibraryManager = service;
+  };
+
+  private LoadingCache<String, EventListener> lookupCache = CacheBuilder.newBuilder()
+      .expireAfterWrite(5, TimeUnit.SECONDS)
+      .weakValues()
+      .build(new CacheLoader<String, EventListener>() {
+        @Override
+        public EventListener load(String key) throws Exception {
+          try (ResourceResolver resourceResolver = resourceResolverFactory.getServiceResourceResolver(null)) {
+            Session session = resourceResolver.adaptTo(Session.class);
+            ObservationManager observationManager = session.getWorkspace().getObservationManager();
+            EventListenerIterator eventListeners = observationManager.getRegisteredEventListeners();
+            while (eventListeners.hasNext()) {
+              EventListener item = eventListeners.nextEventListener();
+              log.warn("Found event listener: " + item.getClass().getName());
+              if (item.getClass().getName().equals(key)) {
+                return item;
+              }
+            }
+          }
+          catch (Exception ex) {
+            log.warn("Error looking up JCR event listener for " + key, ex);
+          }
+          return NOT_FOUND;
+        }
+  });
+
+  public EventListener get(String className) {
+    try {
+      EventListener result = lookupCache.get(className);
+      if (result == NOT_FOUND) {
+        return null;
+      }
+      return result;
     }
-
-    return service;
-  }
-
-  @Override
-  public void modifiedService(ServiceReference<EventListener> reference, Object service) {
-    // nothing to do
-  }
-
-  @Override
-  public void removedService(ServiceReference<EventListener> reference, Object service) {
-    String className = service.getClass().getName();
-
-    if (isComponentCache(className)) {
-      componentCache = null;
+    catch (ExecutionException ex) {
+      log.warn("Error looking up JCR event listener for " + className, ex);
+      return null;
     }
-    else if (isHtmlLibraryManager(className)) {
-      htmlLibraryManager = null;
-    }
-
-    bundleContext.ungetService(reference);
   }
-
-  private boolean isComponentCache(String className) {
-    return COMPONENT_CACHE_IMPL_CLASS.equals(className);
-  }
-
-  private boolean isHtmlLibraryManager(String className) {
-    return HTML_LIBRARY_MANAGER_IMPL_CLASS.equals(className);
-  }
-
-
-  public EventListener getComponentCache() {
-    return this.componentCache;
-  }
-
-
-  public void setComponentCache(EventListener componentCache) {
-    this.componentCache = componentCache;
-  }
-
-  public EventListener getHtmlLibraryManager() {
-    return this.htmlLibraryManager;
-  }
-
-  public void setHtmlLibraryManager(EventListener htmlLibraryManager) {
-    this.htmlLibraryManager = htmlLibraryManager;
-  }
-
 }

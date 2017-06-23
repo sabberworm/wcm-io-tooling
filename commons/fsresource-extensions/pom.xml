@@ -50,6 +50,12 @@
   <dependencies>
 
     <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
       <groupId>org.osgi</groupId>
       <artifactId>osgi.core</artifactId>
       <scope>provided</scope>

@@ -47,11 +47,12 @@ public class ComponentCacheEventBridge implements ResourceChangeListener {
 
   @Override
   public void onChange(List<ResourceChange> changes) {
-    EventListener eventListener = eventListenerTracker.getComponentCache();
+    EventListener eventListener = eventListenerTracker.get(EventListenerTracker.COMPONENT_CACHE_IMPL_CLASS);
     if (eventListener == null) {
       log.warn("No event Listener found for " + EventListenerTracker.COMPONENT_CACHE_IMPL_CLASS);
       return;
     }
+    log.warn("Handling " + changes.size() + " events...");
     List<Event> events = new ArrayList<>();
     for (ResourceChange change : changes) {
       Event event = toEvent(change);
