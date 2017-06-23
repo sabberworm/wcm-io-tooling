@@ -48,13 +48,6 @@
   </properties>
 
   <dependencies>
-
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <scope>compile</scope>
-    </dependency>
-
     <dependency>
       <groupId>org.osgi</groupId>
       <artifactId>osgi.core</artifactId>
@@ -69,11 +62,6 @@
       <groupId>com.adobe.aem</groupId>
       <artifactId>uber-jar</artifactId>
       <classifier>apis</classifier>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>javax.jcr</groupId>
-      <artifactId>jcr</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
