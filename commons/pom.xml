@@ -41,6 +41,7 @@
     <module>parent</module>
     <module>content-package-builder</module>
     <module>crx-packmgr-helper</module>
+    <module>fsresource-extensions</module>
   </modules>
 
   <build>
