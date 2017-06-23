@@ -65,6 +65,16 @@
       <classifier>apis</classifier>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>javax.jcr</groupId>
+      <artifactId>jcr</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <scope>compile</scope>
+    </dependency>
 
   </dependencies>
   <dependencyManagement>
@@ -73,7 +83,7 @@
       <dependency>
         <groupId>io.wcm.maven</groupId>
         <artifactId>io.wcm.maven.aem-dependencies</artifactId>
-        <version>6.2.0.0001</version>
+        <version>6.3.0.0000</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>

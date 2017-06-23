@@ -19,11 +19,18 @@
  */
 package io.wcm.tooling.commons.fsresourceext.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.jcr.observation.Event;
+import javax.jcr.observation.EventListener;
 
 import org.apache.sling.api.resource.observation.ResourceChange;
 import org.apache.sling.api.resource.observation.ResourceChangeListener;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Component(service = ResourceChangeListener.class, immediate = true, property = {
     ResourceChangeListener.PATHS + "=/apps",
@@ -33,10 +40,45 @@ import org.osgi.service.component.annotations.Component;
 })
 public class ComponentCacheEventBridge implements ResourceChangeListener {
 
+  @Reference
+  private EventListenerTracker eventListenerTracker;
+
+  private static final Logger log = LoggerFactory.getLogger(ComponentCacheEventBridge.class);
+
   @Override
   public void onChange(List<ResourceChange> changes) {
-    // TODO: Auto-generated method stub
+    EventListener eventListener = eventListenerTracker.getComponentCache();
+    if (eventListener == null) {
+      log.warn("No event Listener found for " + EventListenerTracker.COMPONENT_CACHE_IMPL_CLASS);
+      return;
+    }
+    List<Event> events = new ArrayList<>();
+    for (ResourceChange change : changes) {
+      Event event = toEvent(change);
+      if (event != null) {
+        events.add(event);
+      }
+    }
+    eventListener.onEvent(new EventIteratorImpl(events));
+  }
 
+  private Event toEvent(ResourceChange change) {
+    int type = 0;
+    switch (change.getType()) {
+      case ADDED:
+        type = Event.NODE_ADDED;
+        break;
+      case CHANGED:
+        type = Event.PROPERTY_CHANGED;
+        break;
+      case REMOVED:
+        type = Event.NODE_REMOVED;
+        break;
+      default:
+        return null;
+    }
+    log.warn("Event " + change.getType() + " on " + change.getPath());
+    return new EventImpl(type, change.getPath());
   }
 
 }
