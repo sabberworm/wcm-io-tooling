@@ -454,10 +454,12 @@
               <exclude>dc\:modified</exclude>
             </excludeProperties>
             <excludeMixins>
-              <exclude>mix\:versionable</exclude>
+              <exclude>mix\:lockable</exclude>
               <exclude>mix\:referenceable</exclude>
+              <exclude>mix\:versionable</exclude>
               <exclude>cq\:Taggable</exclude>
               <exclude>cq\:ReplicationStatus</exclude>
+              <exclude>dam\:Thumbnails</exclude>
             </excludeMixins>
             <unpackDeleteDirectories>
               <directory>jcr_root</directory>
